@@ -1,4 +1,4 @@
-import { CalendarMonthOutlined, InsightsOutlined, LocalOfferOutlined, SearchOutlined } from "@mui/icons-material"
+import { CalendarMonthOutlined, SearchOutlined } from "@mui/icons-material"
 import { Link } from "react-router-dom"
 
 export const MenuLateral = () => {
@@ -14,14 +14,6 @@ export const MenuLateral = () => {
                 <SearchOutlined/>
                 <Link to={'/buscar'}>Buscar</Link>
             </span>
-            <span className="flex gap-2 mt-5">
-                <LocalOfferOutlined/>
-                <Link to={'/'}>Tags e Projetos</Link>
-            </span>
-            <span className="flex gap-2 mt-5">
-                <InsightsOutlined/>
-                <Link to={'/'}>Seu Rendimento</Link>
-            </span>
         </div>
         <div className="md:hidden flex w-full justify-end gap-3">
             <span className="">
@@ -29,12 +21,6 @@ export const MenuLateral = () => {
             </span>
             <span className="">
                 <Link to={'/buscar'}><SearchOutlined/></Link>
-            </span>
-            <span className="">
-                <Link to={'/'}><LocalOfferOutlined/></Link>
-            </span>
-            <span className="">
-                <Link to={'/'}><InsightsOutlined/></Link>
             </span>
         </div>
     </div>

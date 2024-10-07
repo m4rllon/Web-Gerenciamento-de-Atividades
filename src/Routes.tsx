@@ -13,8 +13,6 @@ function AppRoutes() {
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/buscar" element={<Buscar/>}/>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/" element={<Home/>}/>
         </Routes>
       </main>
     </TasksProvider>

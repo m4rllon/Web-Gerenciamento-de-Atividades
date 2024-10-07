@@ -1,4 +1,3 @@
-import { SearchOutlined } from "@mui/icons-material"
 import { useContext, useEffect, useState } from "react"
 import { TasksContext } from "../../context/tasksContext"
 import TaskCard from "../../components/taskCard"
