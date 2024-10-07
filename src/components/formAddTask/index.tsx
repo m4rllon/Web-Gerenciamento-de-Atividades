@@ -4,11 +4,11 @@ import React, {  useContext, useState } from "react"
 import { Tarefa } from "../../data/@types/ITask";
 import { TasksContext } from "../../context/tasksContext";
 
+
 interface ChildComponentProps {
     setTaskSelect: React.Dispatch<React.SetStateAction<boolean>>;
     tarefa?: Tarefa;
 }
-
 
 const FormAddTask = ({ setTaskSelect, tarefa}:ChildComponentProps) => {
     
@@ -23,7 +23,7 @@ const FormAddTask = ({ setTaskSelect, tarefa}:ChildComponentProps) => {
             ...dataForm,
             [e.target.name]: e.target.value
         })
-    }
+    } 
 
     const addTarefa = () => {
         if(setTasks) setTasks(prev => [...prev, dataForm])
@@ -34,15 +34,18 @@ const FormAddTask = ({ setTaskSelect, tarefa}:ChildComponentProps) => {
             if(task.id === tarefa?.id) return dataForm
             else return task
         })
-        console.log(newTasksList)
         if(setTasks && newTasksList) setTasks(newTasksList)
     }
 
     const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const taskTarget = tasks?.find(task => task.id === tarefa?.id)
-        if(taskTarget) editTask()
-        else addTarefa()
+        if(taskTarget){
+            editTask()
+        } 
+        else {
+            addTarefa()
+        }
         setTaskSelect(prev=> !prev)
     }
 
@@ -50,36 +53,36 @@ const FormAddTask = ({ setTaskSelect, tarefa}:ChildComponentProps) => {
         {tarefa ? <h2 className="text-xl font-bold mb-2">Edite as informações desta tarefa:</h2> : <></>}
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <div className="flex flex-col">
-                <label htmlFor="titletask">Título da tarefa</label>
+                <label className="font-semibold text-lg" htmlFor="titletask">Título da tarefa</label>
                 <input
-                className="text-black" 
+                className="text-black h-10 rounded-md px-3 bg-slate-200" 
                 type="text" 
                 name="titletask" 
                 onChange={handleChangeValue}
                 placeholder="Digíte o título da tarefa aqui"
-                defaultValue={tarefa?.titletask}
+                defaultValue={dataForm.titletask}
                 />
             </div>
             <div className="flex flex-col">
-                <label htmlFor="desctask">Descrição da tarefa</label>
+                <label className="font-semibold text-lg" htmlFor="desctask">Descrição da tarefa</label>
                 <input
-                className="text-black" 
+                className="text-black h-10 rounded-md px-3 bg-slate-200" 
                 type="text" 
                 name="desctask" 
                 onChange={handleChangeValue}
                 placeholder="Digíte a descrição da tarefa aqui"
-                defaultValue={tarefa?.desctask}
+                defaultValue={dataForm.desctask}
                 />
             </div>
             <div className="flex flex-col">
-                <label htmlFor="datetask">Data limite</label>
+                <label className="font-semibold text-lg" htmlFor="datetask">Data limite</label>
                 <input
-                className="text-black" 
+                className="text-black h-10 rounded-md px-3 bg-slate-200" 
                 type="date" 
                 name="datetask" 
                 onChange={handleChangeValue}
                 placeholder="Digíte a descrição da tarefa aqui"
-                defaultValue={tarefa?.datetask}
+                defaultValue={dataForm.datetask}
                 />
             </div>
             <Button type="submit" variant="contained">Salvar</Button>

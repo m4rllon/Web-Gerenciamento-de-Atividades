@@ -1,20 +1,33 @@
 import { Button } from "@mui/material"
 import { Tarefa } from "../../data/@types/ITask"
 import Delete from "@mui/icons-material/Delete"
-import { AssignmentOutlined, CheckCircle, Edit, RadioButtonUncheckedOutlined } from "@mui/icons-material"
+import { AssignmentOutlined, 
+    CheckCircle, 
+    Edit, 
+    RadioButtonUncheckedOutlined } from "@mui/icons-material"
 import { useContext, useEffect, useState } from "react"
 import { TasksContext } from "../../context/tasksContext"
 import FormAddTask from "../formAddTask"
 import setDateTaskCard from "../../utils/setDateTaskCard"
 
-const TaskCard = ({id, titletask, desctask, datetask, status}: Tarefa) => {
-    const [tarefa, setTarefa] = useState({id, titletask, desctask, datetask, status})
+interface props {
+    id: string;
+    openOrCloseModal: (idTask:string, taskTarget:Tarefa) => void;
+}
+
+const TaskCard = ({id, openOrCloseModal}: props) => {
     const [editSelect, setEditSelect] = useState(false)
-    const [newStatus, setNewStatus] = useState(status)
     
     const context = useContext(TasksContext)
     const [tasks, setTasks] = [context?.tasks, context?.setTasks]
+    
+    const [tarefa, setTarefa] = useState<Tarefa | undefined>(tasks?.find(task => task.id === id))
+    const [newStatus, setNewStatus] = useState(tarefa?.status)
 
+    const getTaskByID = () => {
+        return tasks?.find(task => task.id === id)
+    }
+    
     const deleteTask = () => {
         const taskTarget = tasks?.find(task => task.id === id) 
         const newTasksList = tasks?.filter(task => task.id !== taskTarget?.id)
@@ -35,25 +48,30 @@ const TaskCard = ({id, titletask, desctask, datetask, status}: Tarefa) => {
     }, [newStatus])
 
     useEffect(()=>{
+        if(tarefa)
         editTask(tarefa)
     }, [tarefa])
 
+    useEffect(()=>{
+        setTarefa(getTaskByID())
+    }, [tasks])
+
     return <>
     {
-        !editSelect ? <div className="w-full my-2 p-2 border-b-2 border-slate-600">
-            <span className="flex justify-between items-center">
-                <div className="">
-                    <span className="flex gap-3 items-center">
+        !editSelect ? <div className="border-slate-600 w-full my-1 p-2 border-b-2">
+            <span className="flex flex-col justify-start items-start gap-5">
+                <div className="" onClick={() => {if(tarefa) openOrCloseModal(id, tarefa)}}>
+                    <span className="flex gap-2 items-center">
                         <button onClick={() => setNewStatus(prev => !prev)}>{
                             newStatus ? <CheckCircle sx={{color:'#66BB6A'}}/> : <RadioButtonUncheckedOutlined sx={{color:'#66BB6A'}}/>}</button>
-                        <h6 className={`font-bold ${newStatus ? 'line-through text-slate-600': ''}`}>{titletask}</h6>
+                        <h6 className={`font-bold ${newStatus ? 'line-through text-slate-600': ''}`}>{tarefa?.titletask}</h6>
                     </span>
-                    <p className={`text-md line-clamp-1 ${newStatus ? 'text-slate-600' : ''}`}>{desctask}</p>
+                    <p className={`text-md line-clamp-1 ${newStatus ? 'text-slate-600' : ''}`}>{tarefa?.desctask}</p>
                     <p className={`${newStatus ? 'text-slate-600' : 'text-red-500'}`}>
-                    <AssignmentOutlined/>  {datetask ? setDateTaskCard(datetask) : ''}</p>
+                    <AssignmentOutlined/>  {tarefa?.datetask ? setDateTaskCard(tarefa?.datetask) : ''}</p>
                 </div>
 
-                <span className="h-20 flex justify-start items-end gap-4">
+                <span className="flex justify-start items-end gap-4">
                     <Button 
                     variant="contained" 
                     size="small" 
